@@ -3,7 +3,7 @@ cart = {}
 loop do
   puts 'Введите название товара или "стоп"'
   name = gets.strip
-  break if name.casecmp('стоп').zero?
+  break if name.downcase == 'стоп'
 
   puts 'Введите цену'
   price = gets.to_f
@@ -14,8 +14,14 @@ loop do
   cart[name] = { price: price, count: count }
 end
 
-cart.each { |name, item| puts "#{item[:count]} шт. #{name}, по цене #{item[:price]} на сумму #{item[:price] * item[:count]}" }
+puts cart
 
-total = cart.values.reduce(0) { |sum, item| sum + (item[:price] * item[:count]) }
+total = 0
+
+cart.each do |name, item|
+  item_total = item[:count] * item[:price]
+  puts "#{name} на сумму #{item_total}"
+  total += item_total
+end
 
 puts "Всего на сумму: #{total}"

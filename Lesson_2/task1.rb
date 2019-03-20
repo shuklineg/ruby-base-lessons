@@ -13,4 +13,4 @@ months = {
   december: 31
 }
 
-months.select { |_k, v| v == 30 }.each { |k, _v| puts k.to_s.capitalize }
+months.each { |k, v| puts k.to_s.capitalize if v == 30 }
