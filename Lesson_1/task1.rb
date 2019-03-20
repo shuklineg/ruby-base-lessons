@@ -4,7 +4,7 @@ name = gets.strip
 puts "Введите ваш рост"
 height = gets.to_f
 
-weight = height-110
+weight = height - 110
 
 if weight > 0
   puts "#{name}, ваш идеальный вес #{weight}"

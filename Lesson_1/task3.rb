@@ -1,15 +1,15 @@
 puts "Введите первую сторону треугольника"
-a=gets.to_f
+a = gets.to_f
 puts "Введите вторую сторону треугольника"
-b=gets.to_f
+b = gets.to_f
 puts "Введите третью сторону треугольника"
-c=gets.to_f
+c = gets.to_f
 
-if a > b and a > c
+if a > b && a > c
   h = a
   c1 = b
   c2 = c
-elsif b > c and b > a
+elsif b > c && b > a
   h = b
   c1 = a
   c2 = c
@@ -23,6 +23,6 @@ end
 if h**2 == c1**2 + c2**2
   puts "Треугольник прямоугольный"
   puts "Треугольник равнобедренный" if c1 == c2
-elsif h == c1 and h == c2 and c1 == c2
+elsif h == c1 && h == c2 && c1 == c2
   puts "Треугольнки равносторонний"  
 end
