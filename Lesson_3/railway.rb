@@ -12,6 +12,14 @@ class Station
     type.nil? ? @trains : @trains.select { |train| train.type == type }
   end
 
+  def trains_cargo
+    trains(:cargo)
+  end
+
+  def trains_passenger
+    trains(:passanger)
+  end
+
   def departure(train)
     @trains.delete train
   end
