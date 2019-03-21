@@ -13,4 +13,4 @@ months = {
   december: 31
 }
 
-months.each { |k, v| puts k.to_s.capitalize if v == 30 }
+months.each { |month, days| puts month.to_s.capitalize if days == 30 }
