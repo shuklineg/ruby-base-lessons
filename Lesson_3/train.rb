@@ -9,6 +9,8 @@ class Train
     @number_of_cars = number_of_cars
     @speed = 0
     @route = nil
+    @current_station = nil
+    @current_station_index = 0
   end
 
   def increase_speed(speed = 1)
@@ -32,36 +34,28 @@ class Train
     return unless route.class == Route
 
     @route = route
-    @route.schedule.first.arrival(self)
-  end
-
-  def pos
-    pos = [nil, nil, nil]
-    schedule = @route.nil? ? [] : @route.schedule
-    schedule.each_with_index do |station, index|
-      next unless station.trains.include? self
-
-      pos[0] = schedule[index - 1] if index > 0
-      pos[1] = station
-      pos[2] = schedule[index + 1] if schedule.size > index + 1
-      break
-    end
-    pos
+    @current_station_index = 0
+    @current_station = @route.schedule.first
+    @current_station.arrival(self)
   end
 
   def move_forward
-    _backward, current, forward = pos
-    return if forward.nil?
+    schedule = @route.schedule
+    return unless schedule.size > @current_station_index + 1
 
-    current.departure(self)
-    forward.arrival(self)
+    @current_station.departure(self)
+    @current_station_index += 1
+    @current_station = schedule[@current_station_index]
+    @current_station.arrival(self)
   end
 
   def move_backward
-    backward, current, _forward = pos
-    return if backward.nil?
+    schedule = @route.schedule
+    return unless @current_station_index - 1 > 0
 
-    current.departure(self)
-    backward.arrival(self)
+    @current_station.departure(self)
+    @current_station_index -= 1
+    @current_station = schedule[@current_station_index]
+    @current_station.arrival(self)
   end
 end

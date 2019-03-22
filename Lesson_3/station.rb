@@ -9,7 +9,7 @@ class Station
   end
 
   def trains(type = nil)
-    type.nil? ? @trains : @trains.select { |train| train.type == type }
+    type ? @trains : @trains.select { |train| train.type == type }
   end
 
   def trains_cargo
