@@ -1,15 +1,11 @@
 class Train
-  attr_reader :type
-  attr_reader :speed
-  attr_reader :number_of_cars
+  attr_reader :type, :speed, :number_of_cars, :route, :current_station
 
   def initialize(number, type, number_of_cars)
     @number = number
     @type = type
     @number_of_cars = number_of_cars
     @speed = 0
-    @route = nil
-    @current_station = nil
     @current_station_index = 0
   end
 
@@ -40,22 +36,29 @@ class Train
   end
 
   def move_forward
-    schedule = @route.schedule
-    return unless schedule.size > @current_station_index + 1
+    return unless @route.schedule.size > @current_station_index + 1
 
-    @current_station.departure(self)
-    @current_station_index += 1
-    @current_station = schedule[@current_station_index]
-    @current_station.arrival(self)
+    move(next_station)
   end
 
   def move_backward
-    schedule = @route.schedule
-    return unless @current_station_index - 1 > 0
+    return unless @current_station_index > 0
 
+    move(previous_station)
+  end
+
+  def move(to_station)
     @current_station.departure(self)
-    @current_station_index -= 1
-    @current_station = schedule[@current_station_index]
-    @current_station.arrival(self)
+    to_station.arrival(self)
+    @current_station = to_station
+    @current_station_index = @route.schedule.index(@current_station)
+  end
+
+  def next_station
+    @route.schedule[@current_station_index + 1]
+  end
+
+  def previous_station
+    @route.schedule[@current_station_index - 1]
   end
 end
