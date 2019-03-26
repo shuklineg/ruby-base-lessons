@@ -1,2 +1,0 @@
-class CargoTrain < Train
-end

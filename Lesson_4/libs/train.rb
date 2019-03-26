@@ -1,12 +1,11 @@
 class Train
-  attr_reader :type, :speed, :number_of_cars, :route, :current_station
+  attr_reader :speed, :cars, :route, :current_station, :type, :number
 
-  def initialize(number, type, number_of_cars)
+  def initialize(number)
     @number = number
-    @type = type
-    @number_of_cars = number_of_cars
     @speed = 0
     @current_station_index = 0
+    @cars = []
   end
 
   def increase_speed(speed = 1)
@@ -18,17 +17,7 @@ class Train
     @speed = 0 if @speed < 0
   end
 
-  def unhook_a_car
-    @number_of_cars -= 1 if @speed.zero? && @number_of_cars > 0
-  end
-
-  def hook_a_car
-    @number_of_cars += 1 if @speed.zero?
-  end
-
   def route=(route)
-    return unless route.class == Route
-
     @route = route
     @current_station_index = 0
     @current_station = @route.schedule.first
@@ -46,6 +35,24 @@ class Train
 
     move(previous_station)
   end
+
+  def unhook(car)
+    @cars.delete(car)
+  end
+
+  def to_s
+    str = "#{@type} поезд, №#{@number}"
+    str << (@cars.size.zero? ? '' : " , вагонов: #{@cars.size}")
+    str << (@route.nil? ? '' : " , на маршруте \"#{@route}\"")
+  end
+
+  protected
+
+  def hook_any(car)
+    @cars << car
+  end
+
+  private
 
   def move(to_station)
     @current_station.departure(self)

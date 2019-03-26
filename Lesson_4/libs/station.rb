@@ -1,4 +1,6 @@
 class Station
+  attr_reader :trains, :name
+
   def initialize(name)
     @name = name
     @trains = []
@@ -8,16 +10,12 @@ class Station
     @trains << train unless @trains.include? train
   end
 
-  def trains(type = nil)
-    type ? @trains : @trains.select { |train| train.type == type }
-  end
-
   def trains_cargo
-    trains(:cargo)
+    trains.select { |train| train.class == CargoTrain }
   end
 
   def trains_passenger
-    trains(:passenger)
+    trains.select { |train| train.class == PassengerTrain }
   end
 
   def departure(train)

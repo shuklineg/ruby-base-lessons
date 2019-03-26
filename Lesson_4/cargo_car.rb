@@ -1,2 +1,0 @@
-class CargoCar < Car
-end
