@@ -22,13 +22,14 @@ class Train
 
   def validate!
     raise "Неверный формат номера поезда" unless @number =~ NUMBER_FORMAT 
-    raise "Поезд с таким номером уже существует" if @@trains[@number]
+    raise "Поезд с таким номером уже существует" if @@trains[@number] && @@trains[@number] != self
   end
 
   def valid?
     validate!
-  rescue
     true
+  rescue
+    false
   end
 
   def self.find(number)

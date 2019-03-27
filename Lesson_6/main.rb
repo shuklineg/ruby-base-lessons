@@ -110,7 +110,7 @@ class App
           train = CargoTrain.new(train_number)
         end
         break if train.valid?
-      rescue Exception => e
+      rescue => e
         puts "Ошибка: #{e}"
       end
     end
