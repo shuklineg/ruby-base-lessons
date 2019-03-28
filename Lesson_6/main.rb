@@ -51,17 +51,15 @@ class App
   end
 
   def add_station
-    loop do
-      station_name = get_answer('Введите название станции')
-      station = Station.new(station_name)
-      @stations << station
-
-      break if station.valid?
-    rescue Station::EmptyName
-      show_error('Название не должно быть пустым')
-    rescue Station::NotUnique
-      show_error('Станция должна иметь уникальное название')
-    end
+    station_name = get_answer('Введите название станции')
+    station = Station.new(station_name)
+    @stations << station
+  rescue Station::EmptyName
+    show_error('Название не должно быть пустым')
+    retry
+  rescue Station::NotUnique
+    show_error('Станция должна иметь уникальное название')
+    retry
   end
 
   def list_routes
@@ -71,18 +69,14 @@ class App
   def add_route
     return if message_if('Станций слишком мало', @stations.size < 2)
 
-    title_elm('Создание маршрута')
-    loop do    
-      starting_station = select_from_list('Введите номер станции начала маршрута', @stations)
-      ending_stations = @stations - [starting_station]
-      end_station = select_from_list('Введите номер станции конца маршрута', ending_stations)
-      route = Route.new(starting_station, end_station)
-      @routes << route
-      
-      break if route.valid?
-    rescue Route::CircleRoute
-      show_error('Станции отправления и назначения должны различаться')
-    end
+    starting_station = select_from_list('Введите номер станции начала маршрута', @stations)
+    ending_stations = @stations - [starting_station]
+    end_station = select_from_list('Введите номер станции конца маршрута', ending_stations)
+    route = Route.new(starting_station, end_station)
+    @routes << route
+  rescue Route::CircleRoute
+    show_error('Станции отправления и назначения должны различаться')
+    retry
   end
 
   def add_station_to_route
@@ -111,27 +105,24 @@ class App
   end
 
   def add_train
-    train = nil
-    loop do
-      train_number = get_answer('Введите номер поезда')
-
-      train_types = %w[Пассажирский Грузовой]
-      case select_from_list('Выберите тип поезда', train_types)
-      when train_types[0]
-        train = PassengerTrain.new(train_number)
-      when train_types[1]
-        train = CargoTrain.new(train_number)
-      end
-      @trains << train
-      
-      break if train.valid?
-    rescue Train::EmptyNumber
-      show_error('Номер не может быть пустым')
-    rescue Train::WrongFormat
-      show_error('Не верный формат номера')
-    rescue Train::NotUnique
-      show_error('Номер должен быть уникальным')
-    end    
+    train_number = get_answer('Введите номер поезда')
+    train_types = %w[Пассажирский Грузовой]
+    case select_from_list('Выберите тип поезда', train_types)
+    when train_types[0]
+      train = PassengerTrain.new(train_number)
+    when train_types[1]
+      train = CargoTrain.new(train_number)
+    end
+    @trains << train
+  rescue Train::EmptyNumber
+    show_error('Номер не может быть пустым')
+    retry
+  rescue Train::WrongFormat
+    show_error('Не верный формат номера')
+    retry
+  rescue Train::NotUnique
+    show_error('Номер должен быть уникальным')
+    retry
   end
 
   def set_route_to_train
