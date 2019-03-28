@@ -1,8 +1,8 @@
 class Station
   include InstanceCounter
 
-  NotUnique = Class.new(Exception)
-  EmptyName = Class.new(Exception)
+  NotUnique = Class.new(StandardError)
+  EmptyName = Class.new(StandardError)
 
   attr_reader :trains, :name
 

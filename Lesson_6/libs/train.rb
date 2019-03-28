@@ -4,9 +4,9 @@ class Train
   include Vendor
   include InstanceCounter
 
-  EmptyNumber = Class.new(Exception)
-  WrongFormat = Class.new(Exception)
-  NotUnique = Class.new(Exception)
+  EmptyNumber = Class.new(StandardError)
+  WrongFormat = Class.new(StandardError)
+  NotUnique = Class.new(StandardError)
 
   NUMBER_FORMAT = /[A-ZА-Я0-9]{3}\-?[A-ZА-Я0-9]{2}/.freeze
 

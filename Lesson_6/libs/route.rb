@@ -1,7 +1,7 @@
 class Route
   include InstanceCounter
   
-  CircleRoute = Class.new(Exception)
+  CircleRoute = Class.new(StandardError)
 
   attr_reader :stops
 
