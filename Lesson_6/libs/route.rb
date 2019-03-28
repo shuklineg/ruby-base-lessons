@@ -1,5 +1,7 @@
 class Route
   include InstanceCounter
+  
+  CircleRoute = Class.new(Exception)
 
   attr_reader :stops
 
@@ -7,7 +9,19 @@ class Route
     @starting_station = starting_station
     @end_station = end_station
     @stops = []
+    validate!
     register_instance
+  end
+
+  def validate!
+    raise CircleRoute if @starting_station == @end_station
+  end
+
+  def valid?
+    validate!
+    true
+  rescue StandardError
+    false
   end
 
   def schedule

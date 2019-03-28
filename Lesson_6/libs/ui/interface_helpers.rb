@@ -63,4 +63,8 @@ module InterfaceHelpers
     yes = answer == 'y' if %w[y n].include? answer
     yes
   end
+
+  def show_error(msg)
+    puts "Ошибка: #{msg}"
+  end
 end

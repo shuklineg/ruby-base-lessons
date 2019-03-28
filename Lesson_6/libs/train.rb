@@ -4,36 +4,41 @@ class Train
   include Vendor
   include InstanceCounter
 
-  attr_reader :speed, :cars, :route, :current_station, :type, :number
+  EmptyNumber = Class.new(Exception)
+  WrongFormat = Class.new(Exception)
+  NotUnique = Class.new(Exception)
 
-  NUMBER_FORMAT = /[a-zA-Z0-9а-яА-Я]{3}\-?[a-zA-Z0-9а-яА-Я]{2}/
+  NUMBER_FORMAT = /[A-ZА-Я0-9]{3}\-?[A-ZА-Я0-9]{2}/.freeze
+
+  attr_reader :speed, :cars, :route, :current_station, :type, :number
 
   @@trains = {}
 
+  def self.find(number)
+    @@trains[number]
+  end
+
   def initialize(number)
-    @number = number
+    @number = number.upcase
     @speed = 0
     @current_station_index = 0
     @cars = []
     validate!
-    @@trains[number] = self
+    @@trains[@number] = self
     register_instance
   end
 
   def validate!
-    raise "Неверный формат номера поезда" unless @number =~ NUMBER_FORMAT 
-    raise "Поезд с таким номером уже существует" if @@trains[@number] && @@trains[@number] != self
+    raise EmptyNumber if @number.empty?
+    raise WrongFormat unless @number =~ NUMBER_FORMAT
+    raise NotUnique if @@trains[@number] && @@trains[@number] != self
   end
 
   def valid?
     validate!
     true
-  rescue
+  rescue StandardError
     false
-  end
-
-  def self.find(number)
-    @@trains[number]
   end
 
   def increase_speed(speed = 1)
