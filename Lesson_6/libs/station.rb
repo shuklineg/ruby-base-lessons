@@ -20,12 +20,6 @@ class Station
     register_instance
   end
 
-  def validate!
-    name = @name.downcase
-    raise EmptyName if @name.empty?
-    raise NotUnique if @@stations[name] && @@stations[name] != self
-  end
-
   def valid?
     validate!
     true
@@ -51,5 +45,13 @@ class Station
 
   def to_s
     "Станция #{@name}, всего поездов #{@trains.count}"
+  end
+  
+  protected
+
+  def validate!
+    name = @name.downcase
+    raise EmptyName if @name.empty?
+    raise NotUnique if @@stations[name] && @@stations[name] != self
   end
 end

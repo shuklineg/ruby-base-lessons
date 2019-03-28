@@ -8,7 +8,7 @@ class Train
   WrongFormat = Class.new(StandardError)
   NotUnique = Class.new(StandardError)
 
-  NUMBER_FORMAT = /[A-ZА-Я0-9]{3}\-?[A-ZА-Я0-9]{2}/.freeze
+  NUMBER_FORMAT = /[a-zа-я0-9]{3}\-?[a-zа-я0-9]{2}/i.freeze
 
   attr_reader :speed, :cars, :route, :current_station, :type, :number
 
@@ -26,12 +26,6 @@ class Train
     validate!
     @@trains[@number] = self
     register_instance
-  end
-
-  def validate!
-    raise EmptyNumber if @number.empty?
-    raise WrongFormat unless @number =~ NUMBER_FORMAT
-    raise NotUnique if @@trains[@number] && @@trains[@number] != self
   end
 
   def valid?
@@ -83,6 +77,12 @@ class Train
 
   def hook_any(car)
     @cars << car
+  end
+
+  def validate!
+    raise EmptyNumber if @number.empty?
+    raise WrongFormat if @number !~ NUMBER_FORMAT
+    raise NotUnique if @@trains[@number] && @@trains[@number] != self
   end
 
   private

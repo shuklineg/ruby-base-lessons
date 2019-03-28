@@ -13,10 +13,6 @@ class Route
     register_instance
   end
 
-  def validate!
-    raise CircleRoute if @starting_station == @end_station
-  end
-
   def valid?
     validate!
     true
@@ -41,5 +37,11 @@ class Route
 
   def to_s
     "#{@starting_station.name} - #{@end_station.name}, всего #{schedule.size} станций"
+  end
+
+  protected
+
+  def validate!
+    raise CircleRoute if @starting_station == @end_station
   end
 end
