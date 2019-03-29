@@ -51,7 +51,7 @@ class App
   end
 
   def add_station
-    station_name = get_answer('Введите название станции')
+    station_name = get_answer_or_empty('Введите название станции')
     station = Station.new(station_name)
     @stations << station
   rescue Station::EmptyName
@@ -70,8 +70,7 @@ class App
     return if message_if('Станций слишком мало', @stations.size < 2)
 
     starting_station = select_from_list('Введите номер станции начала маршрута', @stations)
-    ending_stations = @stations - [starting_station]
-    end_station = select_from_list('Введите номер станции конца маршрута', ending_stations)
+    end_station = select_from_list('Введите номер станции конца маршрута', @stations)
     route = Route.new(starting_station, end_station)
     @routes << route
   rescue Route::CircleRoute
@@ -105,7 +104,7 @@ class App
   end
 
   def add_train
-    train_number = get_answer('Введите номер поезда')
+    train_number = get_answer_or_empty('Введите номер поезда')
     train_types = %w[Пассажирский Грузовой]
     case select_from_list('Выберите тип поезда', train_types)
     when train_types[0]

@@ -13,6 +13,11 @@ module InterfaceHelpers
     answer
   end
 
+  def get_answer_or_empty(prompt)
+    print "#{prompt}: "
+    gets.strip
+  end
+
   def print_list(title, list)
     title_elm(title)
     puts list.empty? ? 'нет' : list
