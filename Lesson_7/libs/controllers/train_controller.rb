@@ -50,29 +50,29 @@ class TrainController
     return if message_if('Нет вагонов', @train.cars.empty?)
 
     car = select_from_list('Выберите вагон', @train.cars)
-    if car.is_a? PassengerCar
-      return if message_if('Нет свободных мест', car.free_seats.zero?)
+    take_seat(car) if car.is_a? PassengerCar
+    load_cargo(car) if car.is_a? CargoCar
+  end
 
-      begin
-        puts "Свободное место: #{car.free_seats}"
-        passengers = get_answer('Сколько пассажиров посадить в вагон')
-        car.take_seats(passengers)
-      rescue Car::Overload
-        show_error('Недостаточно свободного места')
-        retry
-      end
-    end
-    if car.is_a? CargoCar
-      return if message_if('Нет свободного места', car.free_space.zero?)
+  private
 
-      begin
-        puts "Свободное место: #{car.free_space}"
-        cargo = get_answer('Объем груза для загрузки в вагон')
-        car.take_cargo(cargo)
-      rescue Car::Overload
-        show_error('Недостаточно свободного места')
-        retry
-      end
-    end
+  def take_seat(car)
+    return if message_if('Нет свободных мест', car.free_seats.zero?)
+
+    car.take_seat
+  rescue Car::Overload
+    show_error('Недостаточно свободных мест')
+    retry
+  end
+
+  def load_cargo(car)
+    return if message_if('Нет свободного места', car.free_space.zero?)
+
+    puts "Свободное место: #{car.free_space}"
+    cargo = get_answer('Объем груза для загрузки в вагон')
+    car.take_cargo(cargo)
+  rescue Car::Overload
+    show_error('Недостаточно свободного места')
+    retry
   end
 end

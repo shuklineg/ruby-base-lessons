@@ -7,11 +7,11 @@ class CargoCar < Car
     super capacity.to_f
   end
 
-  def take_cargo(cargo)
-    cargo = cargo.to_f
-    raise Overload if cargo > free_space
+  def take_cargo(new_cargo)
+    new_cargo = new_cargo.to_f
+    raise Overload if new_cargo > free_space
 
-    @cargo += cargo
+    @cargo += new_cargo
   end
 
   def free_space

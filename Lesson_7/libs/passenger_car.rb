@@ -7,11 +7,10 @@ class PassengerCar < Car
     super capacity.to_i
   end
 
-  def take_seats(passengers)
-    passengers = passengers.to_i
-    raise Overload if passengers > free_seats
+  def take_seat
+    raise Overload if free_seats.zero?
 
-    @passengers += passengers
+    @passengers += 1
   end
 
   def free_seats
