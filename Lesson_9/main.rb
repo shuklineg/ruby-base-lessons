@@ -1,5 +1,7 @@
 require_relative 'libs/modules/vendor'
 require_relative 'libs/modules/instance_counter'
+require_relative 'libs/modules/accessors'
+require_relative 'libs/modules/validation'
 
 require_relative 'libs/train'
 require_relative 'libs/passenger_train'
