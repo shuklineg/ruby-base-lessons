@@ -9,7 +9,7 @@ module Validation
   end
 
   module ClassMethods
-    def validates(name, type, option = nil)
+    def validate(name, type, option = nil)
       raise TypeError unless name.is_a?(Symbol)
       raise TypeError unless type.is_a?(Symbol)
       raise TypeError if type == :format && !option.is_a?(Regexp)
