@@ -1,16 +1,16 @@
 class PassengerCar < Car
-  attr_reader :passengers
+  attr_accessor_with_history :passengers
 
   def initialize(capacity)
     @type = 'Пассажирский'
-    @passengers = 0
+    self.passengers = 0
     super capacity.to_i
   end
 
   def take_seat
     raise Overload if free_seats.zero?
 
-    @passengers += 1
+    self.passengers += 1
   end
 
   def free_seats

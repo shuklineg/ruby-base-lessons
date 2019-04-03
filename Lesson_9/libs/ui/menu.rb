@@ -25,6 +25,7 @@ module Menu
     { title: 'Удалить вагон', answer: '5', callback: :unhook_car },
     { title: 'Список вагонов', answer: '6', callback: :cars },
     { title: 'Загрузить вагон/занять место', answer: '7', callback: :car_load },
+    { title: 'История изменения загрузки вагона', answer: '8', callback: :car_history },
     { title: 'Назад', answer: '0', break: true }
   ].freeze
 

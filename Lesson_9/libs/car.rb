@@ -1,6 +1,7 @@
 require_relative 'modules/vendor'
 
 class Car
+  include Accessors
   include Vendor
 
   attr_reader :capacity

@@ -1,10 +1,11 @@
 class Station
+  include Accessors
+  include Validation
   include InstanceCounter
 
-  NotUnique = Class.new(StandardError)
-  EmptyName = Class.new(StandardError)
-
-  attr_reader :trains, :name
+  attr_reader :trains
+  validate :name, :presence
+  strong_attr_accessor :name, String
 
   @@stations = {}
 
@@ -22,13 +23,6 @@ class Station
 
   def each_train
     @trains.each { |train| yield train }
-  end
-
-  def valid?
-    validate!
-    true
-  rescue StandardError
-    false
   end
 
   def arrival(train)
@@ -49,13 +43,5 @@ class Station
 
   def to_s
     "Станция #{@name}, всего поездов #{@trains.count}"
-  end
-
-  protected
-
-  def validate!
-    name = @name.downcase
-    raise EmptyName if @name.empty?
-    raise NotUnique if @@stations[name] && @@stations[name] != self
   end
 end

@@ -51,7 +51,16 @@ class TrainController
 
     car = select_from_list('Выберите вагон', @train.cars)
     take_seat(car) if car.is_a? PassengerCar
-    load_cargo(car) if car.is_a? CargoCar
+    take_cargo(car) if car.is_a? CargoCar
+  end
+
+  def car_history
+    return if message_if('Нет вагонов', @train.cars.empty?)
+
+    car = select_from_list('Выберите вагон', @train.cars)
+    puts 'История загрузки вагона'
+    puts car.passengers_history if car.is_a? PassengerCar
+    puts car.cargo_history if car.is_a? CargoCar
   end
 
   private
@@ -65,7 +74,7 @@ class TrainController
     retry
   end
 
-  def load_cargo(car)
+  def take_cargo(car)
     return if message_if('Нет свободного места', car.free_space.zero?)
 
     puts "Свободное место: #{car.free_space}"

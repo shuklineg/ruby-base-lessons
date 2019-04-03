@@ -1,15 +1,12 @@
-require_relative 'modules/vendor'
-
 class Train
+  include Accessors
+  include Validation
   include Vendor
   include InstanceCounter
 
-  EmptyNumber = Class.new(StandardError)
-  WrongFormat = Class.new(StandardError)
-  NotUnique = Class.new(StandardError)
   NoRoute = Class.new(StandardError)
 
-  NUMBER_FORMAT = /[a-zа-я0-9]{3}\-?[a-zа-я0-9]{2}/i.freeze
+  NUMBER_FORMAT = /^[a-zа-я0-9]{3}\-?[a-zа-я0-9]{2}$/i.freeze
 
   attr_reader :speed, :cars, :route, :current_station, :type, :number
 
@@ -31,13 +28,6 @@ class Train
 
   def each_car
     @cars.each { |car| yield car }
-  end
-
-  def valid?
-    validate!
-    true
-  rescue StandardError
-    false
   end
 
   def increase_speed(speed = 1)
@@ -85,12 +75,6 @@ class Train
 
   def hook_any(car)
     @cars << car
-  end
-
-  def validate!
-    raise EmptyNumber if @number.empty?
-    raise WrongFormat if @number !~ NUMBER_FORMAT
-    raise NotUnique if @@trains[@number] && @@trains[@number] != self
   end
 
   private

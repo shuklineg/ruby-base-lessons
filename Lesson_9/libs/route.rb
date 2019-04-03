@@ -1,9 +1,12 @@
 class Route
+  include Accessors
+  include Validation
   include InstanceCounter
 
-  CircleRoute = Class.new(StandardError)
+  validate :starting_station, :type, Station
+  validate :end_station, :type, Station
 
-  attr_reader :stops
+  attr_accessor_with_history :stops
 
   def initialize(starting_station, end_station)
     @starting_station = starting_station
@@ -11,13 +14,6 @@ class Route
     @stops = []
     validate!
     register_instance
-  end
-
-  def valid?
-    validate!
-    true
-  rescue StandardError
-    false
   end
 
   def schedule
@@ -38,11 +34,5 @@ class Route
   def to_s
     "#{@starting_station.name} - " \
     "#{@end_station.name}, всего #{schedule.size} станций"
-  end
-
-  protected
-
-  def validate!
-    raise CircleRoute if @starting_station == @end_station
   end
 end

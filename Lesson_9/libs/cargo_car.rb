@@ -1,17 +1,17 @@
 class CargoCar < Car
-  attr_reader :capacity, :cargo
+  attr_accessor_with_history :cargo
 
-  def initialize(capacity)
+  def initialize(cargo_capacity)
     @type = 'Грузовой'
-    @cargo = 0
-    super capacity.to_f
+    self.cargo = 0
+    super cargo_capacity.to_f
   end
 
   def take_cargo(new_cargo)
     new_cargo = new_cargo.to_f
     raise Overload if new_cargo > free_space
 
-    @cargo += new_cargo
+    self.cargo += new_cargo
   end
 
   def free_space

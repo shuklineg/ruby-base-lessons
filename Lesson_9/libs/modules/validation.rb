@@ -23,8 +23,16 @@ module Validation
     end
   end
   module InstanceMethods
+    def valid?
+      validate!
+    rescue StandardError
+      false
+    end
+
+    protected
+
     def validate!
-      validators = self.class.instance_variable_get(:@validators)
+      validators = self.class.instance_variable_get(:@validators) || []
       validators.each do |_key, validator|
         value = instance_variable_get(validator[:name])
         case validator[:type]
@@ -38,14 +46,6 @@ module Validation
       end
       true
     end
-
-    def valid?
-      validate!
-    rescue StandardError
-      false
-    end
-
-    protected
 
     def validate_presence(value)
       raise Validation::EmpytValue if value.nil? || value == ''

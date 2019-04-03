@@ -42,11 +42,8 @@ class App
     station_name = get_answer_or_empty('Введите название станции')
     station = Station.new(station_name)
     @stations << station
-  rescue Station::EmptyName
+  rescue Validation::EmpytValue
     show_error('Название не должно быть пустым')
-    retry
-  rescue Station::NotUnique
-    show_error('Станция должна иметь уникальное название')
     retry
   end
 
@@ -58,7 +55,7 @@ class App
     return if message_if('Станций слишком мало', @stations.size < 2)
 
     @routes << new_route
-  rescue Route::CircleRoute
+  rescue Validation::WrongType
     show_error('Станции отправления и назначения должны различаться')
     retry
   end
@@ -115,14 +112,11 @@ class App
 
   def create_train(train_class)
     @trains << train_class.new(get_answer_or_empty('Введите номер поезда'))
-  rescue Train::EmptyNumber
+  rescue Validation::EmpytValue
     show_error('Номер не может быть пустым')
     retry
-  rescue Train::WrongFormat
+  rescue Validation::WrongFormat
     show_error('Не верный формат номера')
-    retry
-  rescue Train::NotUnique
-    show_error('Номер должен быть уникальным')
     retry
   end
 end
